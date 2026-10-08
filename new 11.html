@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Our private space</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@600;700&family=Sacramento&display=swap');
+    
+    html, body {
+      height: 100dvh;
+      width: 100%;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      background-color: #030712;
+    }
+    
+    .font-handwriting { font-family: 'Sacramento', cursive; }
+    .font-signature { font-family: 'Dancing Script', cursive; }
+    
+    .theme-love { --accent: #ff2a6d; --accent-glow: rgba(255, 42, 109, 0.4); }
+    .theme-messenger { --accent: #0084ff; --accent-glow: rgba(0, 132, 255, 0.4); }
+    .theme-dark { --accent: #6366f1; --accent-glow: rgba(99, 102, 241, 0.4); }
+    .theme-emerald { --accent: #10b981; --accent-glow: rgba(16, 185, 129, 0.4); }
+
+    .bg-accent { background-color: var(--accent); }
+    .text-accent { color: var(--accent); }
+    .border-accent { border-color: var(--accent); }
+
+    /* Keyframe Animations */
+    @keyframes modalPop {
+      0% { transform: scale(0.88) translateY(15px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px var(--accent-glow); }
+      50% { box-shadow: 0 0 30px var(--accent-glow); }
+    }
+
+    @keyframes floatEnvelope {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(-1.5deg); }
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(100%) scale(0.6) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.6; }
+      80% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) scale(1.2) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes inPlaceEmoji {
+      0% { transform: scale(0.4); opacity: 0; }
+      50% { transform: scale(1.3); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1.15); opacity: 1; }
+    }
+
+    @keyframes textShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes msgFadeInUp {
+      0% { opacity: 0; transform: translateY(12px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .animate-msg-in {
+      animation: msgFadeInUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes giftUnwrap {
+      0% { transform: scale(0.8) rotate(0); opacity: 0; }
+      50% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    /* Page View Slide Animations */
+    @keyframes slideInRight {
+      0% { transform: translateX(100%); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+      0% { transform: translateX(-100%); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+
+    .animate-slide-in { animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-slide-left { animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    .particle-item {
+      position: absolute;
+      pointer-events: none;
+      animation: particleFloat linear infinite;
+      user-select: none;
+      z-index: 1;
+    }
+
+    .animate-pop { animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-glow { animation: pulseGlow 2.5s infinite ease-in-out; }
+    .envelope-anim { animation: floatEnvelope 3s infinite ease-in-out; }
+    .animate-gift-unwrap { animation: giftUnwrap 0.5s ease-out forwards; }
+    .animate-emoji-in-place {
+      display: inline-block;
+      animation: inPlaceEmoji 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .animate-shimmer-text {
+      background: linear-gradient(90deg, #ff2a6d, #ffb3c6, #0084ff, #ff2a6d);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: textShimmer 4s linear infinite;
+    }
+
+    .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-[100dvh] w-full flex flex-col justify-center items-center antialiased theme-love overflow-hidden">
+
+  <!-- ==================== CUSTOM GLASSMORPHISM TOAST ==================== -->
+  <div id="custom-toast" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 border border-pink-500/40 backdrop-blur-xl text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-semibold animate-pop transition-all duration-300">
+    <span id="toast-icon" class="text-sm">✨</span>
+    <span id="toast-msg">Notification</span>
+  </div>
+
+  <!-- ==================== ANIMATED SOUND TOGGLE CORNER BUTTON ==================== -->
+  <button id="global-sound-btn" onclick="toggleSoundMute()" class="fixed top-3 right-3 z-40 p-2.5 bg-slate-900/80 border border-pink-500/40 backdrop-blur-md rounded-2xl text-pink-400 shadow-xl transition-all duration-300 hover:scale-110 active:scale-90" title="Sound Effect Toggle">
+    <i id="global-sound-icon" class="fa-solid fa-volume-high animate-pulse text-sm"></i>
+  </button>
+
+  <!-- ==================== 1. LOGIN MODAL ==================== -->
+  <div id="login-modal" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4">
+    <div id="login-card" class="bg-slate-900/90 border border-slate-800/90 p-6 rounded-3xl shadow-2xl max-w-sm w-full text-center space-y-5 animate-pop relative backdrop-blur-xl">
+      
+      <div id="login-img-box" class="w-20 h-20 mx-auto rounded-2xl overflow-hidden border-2 border-pink-500/30 shadow-xl flex items-center justify-center bg-slate-800/80 transition-all duration-300">
+        <div class="w-14 h-14 bg-pink-500/10 text-pink-500 rounded-2xl flex items-center justify-center text-xl border border-pink-500/20 animate-glow">
+          <i class="fa-solid fa-lock-keyhole"></i>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-extrabold tracking-wide leading-snug animate-shimmer-text">Our private space</h2>
+        <p class="text-xs text-slate-400 mt-1">প্রবেশের জন্য সিক্রেট পাসওয়ার্ড দিন</p>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <input type="password" id="pass-input" placeholder="Enter Password..." required autocomplete="off"
+          class="w-full px-4 py-3 bg-slate-800/80 border border-slate-700/60 rounded-xl text-center text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 transition shadow-inner">
+        
+        <p id="error-msg" class="text-xs text-rose-500 font-medium hidden">পাসওয়ার্ড ভুল হয়েছে! আবার চেষ্টা করুন。</p>
+
+        <button type="submit" 
+          class="w-full py-3 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-semibold text-sm rounded-xl shadow-lg transition duration-300 active:scale-95">
+          Enter Space
+        </button>
+      </form>
+
+      <div class="pt-2 border-t border-slate-800/80 flex items-center justify-center gap-1.5 text-[11px] font-medium text-slate-400 select-none">
+        <span>Crafted with</span> 
+        <i class="fa-solid fa-heart text-pink-500 text-[10px] animate-pulse"></i> 
+        <span>by</span> 
+        <span class="text-pink-400 font-semibold tracking-wider animate-shimmer-text">Fahim</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN APP SCREEN ==================== -->
+  <div id="app-screen" class="hidden w-full max-w-md h-[100dvh] md:h-[90vh] md:rounded-3xl bg-slate-900 border-x md:border border-slate-800/80 flex flex-col overflow-hidden shadow-2xl relative">
+
+    <div id="global-particle-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- ----------------- 2A. INBOX VIEW ----------------- -->
+    <div id="inbox-view" class="flex-1 flex flex-col h-full bg-slate-950/80 relative overflow-hidden z-10">
+      
+      <header class="px-4 py-3 bg-slate-900/90 border-b border-slate-800 flex justify-between items-center backdrop-blur-md sticky top-0 z-20">
+        <div class="flex items-center gap-3">
+          <div id="my-avatar" class="w-9 h-9 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white text-sm overflow-hidden border border-pink-500/30">
+            ?
+          </div>
+          <div>
+            <h2 class="font-bold text-sm tracking-wide animate-shimmer-text">Our private space</h2>
+            <p id="user-my-role" class="text-[10px] text-pink-400 font-medium"></p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2 pr-10">
+          <button onclick="openSettings()" class="p-2 text-slate-400 hover:text-white bg-slate-800/80 rounded-xl transition-all duration-300 hover:rotate-90 hover:scale-110 active:scale-95 shadow-md">
+            <i class="fa-solid fa-gear text-sm"></i>
+          </button>
+          <button onclick="logout()" class="p-2 text-slate-400 hover:text-rose-400 bg-slate-800/80 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95 hover:-translate-x-0.5 shadow-md">
+            <i class="fa-solid fa-right-from-bracket text-sm"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="p-3.5 space-y-4 overflow-y-auto flex-1 relative z-10 pb-20">
+        
+        <div onclick="openChatView()" class="flex items-center p-3.5 rounded-2xl bg-slate-900/90 backdrop-blur-md border border-slate-800/80 hover:bg-slate-800/80 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-[1.01] shadow-xl">
+          <div class="relative mr-3.5">
+            <div id="inbox-partner-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white text-xl shadow-lg border-2 border-slate-700 overflow-hidden">
+              ?
+            </div>
+            <span id="inbox-partner-dot" class="w-3.5 h-3.5 bg-slate-500 border-2 border-slate-900 rounded-full absolute bottom-0 right-0 transition-colors duration-300"></span>
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between items-baseline mb-0.5">
+              <h3 id="inbox-partner-name" class="font-bold text-white truncate text-sm transition-all duration-300">Partner ID</h3>
+              <span id="inbox-last-time" class="text-[10px] text-slate-500">Offline</span>
+            </div>
+            <p id="inbox-last-msg" class="text-xs text-slate-400 truncate">ক্লিক করে চ্যাটে প্রবেশ করুন...</p>
+          </div>
+        </div>
+
+        <div id="secret-envelope-container" class="hidden envelope-anim cursor-pointer p-4 rounded-2xl bg-gradient-to-r from-slate-900/95 via-amber-950/20 to-slate-900/95 backdrop-blur-xl border border-amber-500/50 hover:border-amber-400 transition-all duration-300 flex items-center justify-between relative shadow-[0_10px_25px_rgba(245,158,11,0.15)] group" onclick="openSecretLettersModal()">
+          <div class="flex items-center space-x-3.5">
+            <div class="relative w-12 h-12 flex-shrink-0 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-rose-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300 text-2xl shadow-inner group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-envelope-open-text"></i>
+              <span id="secret-count-badge" class="absolute -top-1.5 -right-1.5 bg-pink-500 text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900 animate-pulse shadow-md">1</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-amber-300 text-xs flex items-center gap-1.5 tracking-wide">
+                <i class="fa-solid fa-sparkles text-amber-400 text-[10px]"></i> নতুন সিক্রেট চিঠি এসেছে!
+              </h4>
+              <p class="text-[10px] text-slate-400 mt-0.5">একবার পড়ার পরই স্থায়ীভাবে মুছে যাবে</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-amber-400/60 text-xs group-hover:translate-x-1 transition-transform"></i>
+        </div>
+
+      </div>
+
+      <div class="absolute bottom-4 right-4 flex flex-col items-end z-30">
+        <div id="fab-menu" class="hidden flex-col space-y-2.5 mb-2.5 transform transition-all duration-300 origin-bottom-right scale-90 opacity-0 items-end">
+          <button onclick="openSendSecretModal('text')" class="flex items-center justify-center space-x-3 bg-gradient-to-r from-pink-600 to-rose-600 border border-pink-400/50 text-white px-5 py-3 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 text-xs font-bold w-44">
+            <i class="fa-solid fa-envelope text-base"></i>
+            <span>Secret Message</span>
+          </button>
+
+          <button onclick="openSendSecretModal('image')" class="flex items-center justify-center space-x-2 bg-slate-800/90 backdrop-blur-md border border-purple-500/40 text-purple-300 px-3.5 py-2 rounded-2xl shadow-xl hover:bg-slate-700 transition-all duration-200 active:scale-95 text-[11px] font-semibold w-36">
+            <i class="fa-solid fa-image text-xs"></i>
+            <span>Secret Image</span>
+          </button>
+        </div>
+
+        <button id="fab-btn" onclick="toggleFabMenu()" class="w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center shadow-2xl text-xl hover:scale-110 active:scale-90 transition-all duration-300 animate-glow">
+          <i id="fab-icon" class="fa-solid fa-plus transition-transform duration-300"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ----------------- 2B. CHAT ROOM VIEW ----------------- -->
+    <div id="chat-view" class="hidden flex-1 flex-col h-full bg-slate-950 relative overflow-hidden z-10 transition-all duration-300">
+      
+      <div id="chat-particle-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+      <header class="px-3.5 py-2.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between backdrop-blur-md z-20 shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <button onclick="closeChatView()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition-all duration-300 hover:-translate-x-1 active:scale-90">
+            <i class="fa-solid fa-chevron-left text-base"></i>
+          </button>
+          <div class="relative">
+            <div id="chat-partner-avatar" class="w-9 h-9 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white text-sm overflow-hidden border border-slate-700">
+              ?
+            </div>
+            <span id="chat-partner-dot" class="w-2.5 h-2.5 bg-slate-500 border-2 border-slate-900 rounded-full absolute bottom-0 right-0 transition-colors duration-300"></span>
+          </div>
+          <div>
+            <h3 id="chat-partner-name" class="font-bold text-white leading-tight text-xs transition-all duration-300">Partner</h3>
+            <div id="chat-partner-status" class="text-[9px] text-slate-500 font-medium">Offline</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 pr-10">
+          <button onclick="openSettings()" class="p-1.5 text-slate-400 hover:text-white transition-all duration-300 hover:rotate-90 hover:scale-110 active:scale-90">
+            <i class="fa-solid fa-ellipsis-vertical text-base"></i>
+          </button>
+        </div>
+      </header>
+
+      <div id="chat-box" class="flex-1 overflow-y-auto p-3.5 space-y-3 relative z-10"></div>
+
+      <div id="reply-preview-bar" class="hidden px-3 py-1.5 bg-slate-800/90 border-t border-slate-700/60 flex items-center justify-between text-xs backdrop-blur relative z-20 shrink-0">
+        <div class="flex items-center gap-2 overflow-hidden">
+          <i class="fa-solid fa-reply text-pink-400"></i>
+          <div class="truncate">
+            <span class="font-semibold text-pink-400 text-[10px]" id="reply-user-label">Replying to</span>
+            <p id="reply-text-label" class="text-slate-400 truncate text-[11px]"></p>
+          </div>
+        </div>
+        <button onclick="cancelReply()" class="text-slate-400 hover:text-white px-2">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <footer class="p-2.5 bg-slate-900/95 border-t border-slate-800 relative z-20 backdrop-blur-md shrink-0">
+        
+        <!-- Categorized Emoji & Gift Box Drawer Modal -->
+        <div id="emoji-picker" class="hidden absolute bottom-14 left-2 bg-slate-800/95 border border-slate-700 rounded-2xl p-2.5 shadow-2xl w-72 z-30 animate-pop backdrop-blur-lg">
+          <div class="flex justify-between items-center mb-2 pb-1 border-b border-slate-700 text-xs text-slate-400">
+            <span class="font-semibold text-pink-400">Expressive Emojis & Gifts</span>
+            <button onclick="toggleEmojiPicker()" class="hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          
+          <div class="mb-2.5">
+            <button type="button" onclick="selectGiftBoxMode()" class="w-full py-2 px-3 bg-gradient-to-r from-amber-500/20 to-pink-500/20 hover:from-amber-500/30 hover:to-pink-500/30 border border-amber-400/40 rounded-xl text-amber-300 font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow-md">
+              <i class="fa-solid fa-gift text-base text-amber-400 animate-bounce"></i>
+              <span>Send as Gift Message 🎁</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-6 gap-1.5 text-xl max-h-44 overflow-y-auto p-1">
+            <button onclick="addEmoji('👍')" class="hover:scale-125 transition">👍</button>
+            <button onclick="addEmoji('❤️')" class="hover:scale-125 transition">❤️</button>
+            <button onclick="addEmoji('💖')" class="hover:scale-125 transition">💖</button>
+            <button onclick="addEmoji('💕')" class="hover:scale-125 transition">💕</button>
+            <button onclick="addEmoji('🥰')" class="hover:scale-125 transition">🥰</button>
+            <button onclick="addEmoji('🥺')" class="hover:scale-125 transition">🥺</button>
+            <button onclick="addEmoji('🙈')" class="hover:scale-125 transition">🙈</button>
+            <button onclick="addEmoji('🤗')" class="hover:scale-125 transition">🤗</button>
+            <button onclick="addEmoji('💋')" class="hover:scale-125 transition">💋</button>
+            <button onclick="addEmoji('😘')" class="hover:scale-125 transition">😘</button>
+            <button onclick="addEmoji('😍')" class="hover:scale-125 transition">😍</button>
+            <button onclick="addEmoji('🌹')" class="hover:scale-125 transition">🌹</button>
+            <button onclick="addEmoji('🔥')" class="hover:scale-125 transition">🔥</button>
+            <button onclick="addEmoji('💌')" class="hover:scale-125 transition">💌</button>
+            <button onclick="addEmoji('🧸')" class="hover:scale-125 transition">🧸</button>
+            <button onclick="addEmoji('💍')" class="hover:scale-125 transition">💍</button>
+            <button onclick="addEmoji('✨')" class="hover:scale-125 transition">✨</button>
+            <button onclick="addEmoji('🤍')" class="hover:scale-125 transition">🤍</button>
+          </div>
+        </div>
+
+        <form onsubmit="sendMessage(event)" class="flex items-center space-x-2">
+          <button type="button" onclick="toggleEmojiPicker()" class="p-2 text-slate-400 hover:text-pink-400 hover:bg-slate-800 rounded-xl transition shrink-0">
+            <i class="fa-regular fa-face-smile text-lg"></i>
+          </button>
+
+          <label class="p-2 text-slate-400 hover:text-pink-400 hover:bg-slate-800 rounded-xl transition cursor-pointer flex items-center justify-center shrink-0" title="Send Image">
+            <i class="fa-regular fa-image text-lg"></i>
+            <input type="file" id="chat-img-input" accept="image/*" class="hidden" onchange="handleChatImageSelect(event)">
+          </label>
+
+          <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off" oninput="handleTypingInput()"
+            class="flex-1 bg-slate-800/90 text-slate-100 placeholder-slate-500 px-3.5 py-2.5 rounded-xl border border-slate-700/60 focus:outline-none focus:border-pink-500 text-sm transition">
+
+          <button type="submit" class="p-2 bg-accent hover:opacity-90 rounded-xl text-white transition shadow-md active:scale-90 flex items-center justify-center w-10 h-10 shrink-0">
+            <i class="fa-solid fa-paper-plane text-xs"></i>
+          </button>
+        </form>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ==================== 3. SEND SECRET MESSAGE / IMAGE MODAL ==================== -->
+  <div id="send-secret-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-5 space-y-4 shadow-2xl relative animate-pop">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+        <h3 id="send-secret-title" class="font-bold text-white text-xs flex items-center gap-2 text-pink-400"></h3>
+        <button onclick="closeSendSecretModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
+      </div>
+
+      <div class="space-y-3">
+        <div id="secret-input-container"></div>
+      </div>
+
+      <button onclick="submitSecretContent()" class="w-full py-2.5 bg-accent hover:opacity-90 font-semibold text-white text-xs rounded-xl transition shadow-lg active:scale-95">
+        Send Secret
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 4. REAL PAPER SECRET LETTER / IMAGE READ MODAL ==================== -->
+  <div id="secret-letter-modal" class="hidden fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-3.5 relative overflow-hidden animate-pop">
+      
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+        <span class="text-xs font-semibold text-amber-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-envelope-open-text"></i> Secret Envelope Content
+        </span>
+        <button onclick="closeSecretLettersModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div id="secret-letters-list" class="space-y-3 max-h-72 overflow-y-auto"></div>
+
+      <p class="text-[10px] text-slate-500 text-center italic">বন্ধ করার সাথে সাথে চিঠিটি চিরতরে মুছে যাবে</p>
+
+      <button onclick="closeSecretLettersModal()" class="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs rounded-xl transition active:scale-95">
+        Read & Close
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 5. GIFT BOX OPEN MODAL WITH UNWRAP ANIMATION ==================== -->
+  <div id="giftbox-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/50 rounded-3xl max-w-xs w-full p-6 text-center space-y-4 shadow-2xl animate-gift-unwrap relative">
+      <div class="w-20 h-20 bg-gradient-to-tr from-amber-400 to-rose-500 text-white rounded-2xl mx-auto flex items-center justify-center text-4xl shadow-xl border-2 border-amber-300/60 animate-bounce">
+        <i class="fa-solid fa-gift"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-amber-300">A Surprise Gift Message! 🎁</h3>
+        <p class="text-[11px] text-slate-400 mt-1">Special message unwrapped for you:</p>
+      </div>
+      <div id="giftbox-content-box" class="p-4 bg-slate-950 rounded-2xl border border-amber-500/30 text-sm text-amber-100 font-medium leading-relaxed shadow-inner max-h-48 overflow-y-auto"></div>
+      <button onclick="closeGiftBoxModal()" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-rose-500 hover:opacity-90 text-slate-950 font-bold text-xs rounded-xl transition shadow-lg">
+        Close Gift Box
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 6. CONTEXT MENU & REACTION POPUP ==================== -->
+  <div id="context-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" onclick="closeContextMenu()">
+    <div class="bg-slate-900 border border-slate-700/80 rounded-2xl p-3 shadow-2xl max-w-xs w-full space-y-3 animate-pop" onclick="event.stopPropagation()">
+      
+      <div class="flex items-center justify-around bg-slate-800/90 p-2 rounded-xl text-2xl border border-slate-700/50">
+        <button onclick="addReaction('👍')" class="hover:scale-130 transition">👍</button>
+        <button onclick="addReaction('❤️')" class="hover:scale-130 transition">❤️</button>
+        <button onclick="addReaction('🥰')" class="hover:scale-130 transition">🥰</button>
+        <button onclick="addReaction('🤗')" class="hover:scale-130 transition">🤗</button>
+        <button onclick="addReaction('💋')" class="hover:scale-130 transition">💋</button>
+        <button onclick="toggleFullReactionPicker()" class="w-8 h-8 rounded-full bg-slate-700 hover:bg-pink-500 text-white flex items-center justify-center font-bold text-base transition">
+          +
+        </button>
+      </div>
+
+      <div id="full-reaction-picker" class="hidden grid grid-cols-6 gap-2 text-2xl max-h-36 overflow-y-auto bg-slate-800 p-2 rounded-xl border border-slate-700">
+        <button onclick="addReaction('💖')" class="hover:scale-125 transition">💖</button>
+        <button onclick="addReaction('💕')" class="hover:scale-125 transition">💕</button>
+        <button onclick="addReaction('🥺')" class="hover:scale-125 transition">🥺</button>
+        <button onclick="addReaction('🙈')" class="hover:scale-125 transition">🙈</button>
+        <button onclick="addReaction('😘')" class="hover:scale-125 transition">😘</button>
+        <button onclick="addReaction('😍')" class="hover:scale-125 transition">😍</button>
+        <button onclick="addReaction('🌹')" class="hover:scale-125 transition">🌹</button>
+        <button onclick="addReaction('🔥')" class="hover:scale-125 transition">🔥</button>
+        <button onclick="addReaction('💌')" class="hover:scale-125 transition">💌</button>
+        <button onclick="addReaction('🧸')" class="hover:scale-125 transition">🧸</button>
+        <button onclick="addReaction('💍')" class="hover:scale-125 transition">💍</button>
+        <button onclick="addReaction('✨')" class="hover:scale-125 transition">✨</button>
+      </div>
+
+      <div class="space-y-1 text-xs">
+        <button onclick="actionReply()" class="w-full text-left px-3 py-2 text-slate-200 hover:bg-slate-800 rounded-lg flex items-center gap-3">
+          <i class="fa-solid fa-reply text-pink-400"></i> Quick Reply
+        </button>
+        <button onclick="actionToggleBold()" class="w-full text-left px-3 py-2 text-slate-200 hover:bg-slate-800 rounded-lg flex items-center gap-3">
+          <i class="fa-solid fa-bold text-amber-400"></i> Bold & Highlight
+        </button>
+        <button id="action-edit-btn" onclick="actionEdit()" class="w-full text-left px-3 py-2 text-slate-200 hover:bg-slate-800 rounded-lg flex items-center gap-3">
+          <i class="fa-solid fa-pen-to-square text-emerald-400"></i> Edit Message
+        </button>
+        <button onclick="actionDelete()" class="w-full text-left px-3 py-2 text-rose-400 hover:bg-rose-500/10 rounded-lg flex items-center gap-3">
+          <i class="fa-solid fa-trash-can"></i> Delete Message
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. SETTINGS MODAL ==================== -->
+  <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-pop">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-sliders text-pink-500"></i> Settings</h3>
+        <button onclick="closeSettings()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3.5 text-xs">
+        <div class="flex flex-col items-center space-y-2 pb-2 border-b border-slate-800">
+          <div id="settings-pfp-preview" class="w-16 h-16 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white text-xl overflow-hidden border-2 border-pink-500/50 shadow-lg">
+            ?
+          </div>
+          <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-pink-400 border border-pink-500/30 px-3 py-1.5 rounded-xl text-[10px] font-semibold transition active:scale-95 flex items-center gap-1.5">
+            <i class="fa-solid fa-camera"></i> Change Profile Pic
+            <input type="file" id="pfp-file-input" accept="image/*" class="hidden" onchange="handlePfpUpload(event)">
+          </label>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">Partner Nickname</label>
+          <input type="text" id="setting-nickname" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pink-500">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">UI & Animated Background Theme</label>
+          <select id="setting-theme" onchange="applyTheme(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none">
+            <option value="theme-love">💖 Love Theme (Floating Hearts)</option>
+            <option value="theme-messenger">⚡ Messenger Blue (Floating Sparks)</option>
+            <option value="theme-dark">🌙 Cyber Dark (Floating Stars)</option>
+            <option value="theme-emerald">🌿 Emerald Green (Floating Leaves)</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="saveSettings()" class="w-full py-2.5 bg-accent hover:opacity-90 font-semibold text-white text-xs rounded-xl transition active:scale-95 shadow-lg">
+        Save Changes
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 8. SECRET ADMIN MODAL ==================== -->
+  <div id="admin-modal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full max-h-[88vh] flex flex-col shadow-2xl animate-pop">
+      <div class="px-5 py-4 border-b border-slate-800 flex justify-between items-center">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2 text-amber-500"><i class="fa-solid fa-shield-halved"></i> Secret Admin Control Panel</h3>
+        <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="p-4 overflow-y-auto space-y-4 text-xs">
+        
+        <!-- Sound Effect Control in Admin Panel -->
+        <div class="bg-slate-800/60 border border-pink-500/30 rounded-2xl p-3.5 space-y-2.5">
+          <h4 class="font-bold text-pink-400 flex items-center gap-2 text-xs">
+            <i class="fa-solid fa-volume-high"></i> Sound Effect Control
+          </h4>
+          <p class="text-[10px] text-slate-400 leading-normal">
+            ইউজাররা অ্যাপে প্রবেশ করার সময় সাউন্ড বাই-ডিফল্ট অন থাকবে নাকি অফ থাকবে তা সেট করুন:
+          </p>
+
+          <select id="admin-sound-default-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pink-500 text-xs">
+            <option value="true">🔊 Default Sound ON</option>
+            <option value="false">🔇 Default Sound OFF</option>
+          </select>
+        </div>
+
+        <!-- Login Box Image / Animation Choice Panel -->
+        <div class="bg-slate-800/60 border border-pink-500/30 rounded-2xl p-3.5 space-y-2.5">
+          <h4 class="font-bold text-pink-400 flex items-center gap-2 text-xs">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Login Box Image & Animation Style
+          </h4>
+          <p class="text-[10px] text-slate-400 leading-normal">
+            লগইন পাসওয়ার্ড বক্সের উপরে প্রদর্শিত অ্যানিমেশন বা ছবি কাস্টমাইজ করুন:
+          </p>
+
+          <div class="space-y-2.5 pt-1">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Banner Mode:</label>
+              <select id="admin-banner-type-select" onchange="toggleAdminBannerTypeUI(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pink-500 text-xs">
+                <option value="preset">✨ Built-in Animated Preset (Love / Cyber / Neon)</option>
+                <option value="image">🖼️ Custom Uploaded Image</option>
+              </select>
+            </div>
+
+            <div id="admin-preset-section">
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Choose Animation Style:</label>
+              <select id="admin-animation-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-pink-500 text-xs">
+                <option value="love-heart">💖 3D Glowing Animated Love Heart</option>
+                <option value="cyber-sparkles">✨ Cyber Magic Ring & Sparkles</option>
+                <option value="neon-shield">🔒 Pulsing Cyber Lock Shield</option>
+                <option value="romantic-bear">🧸 Cute Romantic Bear & Floating Hearts</option>
+              </select>
+            </div>
+
+            <div id="admin-img-upload-section" class="hidden">
+              <div class="flex items-center gap-3 pt-1">
+                <div id="admin-login-img-preview" class="w-14 h-14 rounded-xl bg-slate-900 border border-slate-700 overflow-hidden flex items-center justify-center text-slate-500 text-xs shadow-md">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+                <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-pink-400 border border-pink-500/30 px-3.5 py-2 rounded-xl text-[11px] font-semibold transition active:scale-95 flex items-center gap-1.5">
+                  <i class="fa-solid fa-upload"></i> Choose Login Image
+                  <input type="file" id="admin-login-img-file" accept="image/*" class="hidden" onchange="handleAdminLoginImgUpload(event)">
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Background Custom Image Option in Admin Panel -->
+        <div class="bg-slate-800/60 border border-pink-500/30 rounded-2xl p-3.5 space-y-2.5">
+          <h4 class="font-bold text-pink-400 flex items-center gap-2 text-xs">
+            <i class="fa-solid fa-paint-roller"></i> Chat Background Theme Image
+          </h4>
+          <p class="text-[10px] text-slate-400 leading-normal">
+            চ্যাট রুমের ব্যাকগ্রাউন্ডে কাস্টম ছবি সেট করুন অথবা রিমুভ করে আগের মতো রাখুন:
+          </p>
+
+          <div class="flex items-center gap-3 pt-1">
+            <div id="admin-chat-bg-preview" class="w-14 h-14 rounded-xl bg-slate-900 border border-slate-700 overflow-hidden flex items-center justify-center text-slate-500 text-xs shadow-md">
+              <i class="fa-solid fa-image"></i>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="cursor-pointer bg-slate-800 hover:bg-slate-700 text-pink-400 border border-pink-500/30 px-3 py-1.5 rounded-xl text-[11px] font-semibold transition active:scale-95 flex items-center gap-1.5">
+                <i class="fa-solid fa-upload"></i> Upload Chat Background
+                <input type="file" id="admin-chat-bg-file" accept="image/*" class="hidden" onchange="handleAdminChatBgUpload(event)">
+              </label>
+              <button type="button" onclick="removeAdminChatBgImg()" class="text-[10px] text-rose-400 hover:text-rose-300 text-left font-medium">
+                <i class="fa-solid fa-trash-can"></i> Remove Background Image
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 border border-pink-500/30 rounded-2xl p-3.5 space-y-2.5">
+          <h4 class="font-bold text-pink-400 flex items-center gap-2 text-xs">
+            <i class="fa-solid fa-user-shield"></i> Secret Mode Control (Google.com Redirect)
+          </h4>
+          <p class="text-[10px] text-slate-400 leading-normal">
+            পাওয়ার বাটন চাপলে বা অ্যাপ ব্যাকগ্রাউন্ডে গেলে গুগল ডট কমে চলে যাওয়ার ফিচারটি কার কার ক্ষেত্রে চালু থাকবে:
+          </p>
+
+          <div class="space-y-2 pt-1">
+            <label class="flex items-center justify-between p-2.5 bg-slate-900 border border-slate-700/80 rounded-xl cursor-pointer hover:bg-slate-800/80 transition">
+              <span class="font-semibold text-slate-200">Fahim Secret Mode</span>
+              <input type="checkbox" id="admin-secret-fahim" class="w-4 h-4 accent-pink-500 rounded cursor-pointer">
+            </label>
+
+            <label class="flex items-center justify-between p-2.5 bg-slate-900 border border-slate-700/80 rounded-xl cursor-pointer hover:bg-slate-800/80 transition">
+              <span class="font-semibold text-slate-200">Jim Secret Mode</span>
+              <input type="checkbox" id="admin-secret-jim" class="w-4 h-4 accent-pink-500 rounded cursor-pointer">
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-3.5 space-y-2">
+          <h4 class="font-semibold text-amber-400">All Messages History</h4>
+          <div class="max-h-36 overflow-y-auto space-y-1.5 font-mono text-[10px]" id="admin-chat-logs"></div>
+        </div>
+
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-3.5 space-y-2.5">
+          <h4 class="font-semibold text-emerald-400">Change Passwords</h4>
+          <div class="grid grid-cols-1 gap-2">
+            <input type="text" id="admin-pass-user1" placeholder="Fahim Password (e.g. 1111)" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+            <input type="text" id="admin-pass-user2" placeholder="Jim Password (e.g. 2222)" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+            <input type="text" id="admin-pass-admin" placeholder="Admin Password" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+          </div>
+        </div>
+
+        <button onclick="saveAdminSettings()" class="w-full py-2.5 bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold rounded-xl shadow-lg hover:opacity-90 transition active:scale-95">
+          Save All Admin Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 9. FULL IMAGE VIEWER LIGHTBOX MODAL ==================== -->
+  <div id="image-viewer-modal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-4" onclick="closeImageViewer()">
+    <button onclick="closeImageViewer()" class="absolute top-4 right-4 text-white text-2xl p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 transition z-50">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img id="full-image-target" src="" class="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl animate-pop" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- ==================== JavaScript Code (Firebase Realtime Integration) ==================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, push, onValue, update, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDfkCPhBIpRflyS51d4cybWQEeM3LfRSFo",
+      authDomain: "fahjim-74cdb.firebaseapp.com",
+      databaseURL: "https://fahjim-74cdb-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "fahjim-74cdb",
+      storageBucket: "fahjim-74cdb.firebasestorage.app",
+      messagingSenderId: "1093420253060",
+      appId: "1:1093420253060:web:65e778141b540df54167d1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const DEFAULT_CONFIG = {
+      passUser1: "1111",
+      passUser2: "2222",
+      passAdmin: "admin123",
+      nickname_Fahim: "Fahim",
+      nickname_Jim: "Jim",
+      pfp_Fahim: "",
+      pfp_Jim: "",
+      loginImg: "",
+      loginBannerType: "preset",
+      loginAnimation: "love-heart",
+      chatBgImg: "",
+      secretMode_Fahim: true,
+      secretMode_Jim: true,
+      theme: "theme-love",
+      defaultSoundOn: true
+    };
+
+    let appConfig = DEFAULT_CONFIG;
+    let messagesList = [];
+    let secretMessagesList = [];
+    let presenceData = {};
+
+    let currentUser = null;
+    let activeReplyTo = null;
+    let selectedMsgId = null;
+    let touchTimer = null;
+    let currentSecretType = 'text';
+    let pendingSecretImageBase64 = "";
+    let tempPfpBase64 = null;
+    let tempAdminLoginImgBase64 = null;
+    let tempAdminChatBgBase64 = null;
+    let typingTimeout = null;
+    let isGiftBoxMode = false;
+
+    /* Sound Effect & Audio State variables */
+    let isSoundMuted = false;
+    let userSoundToggled = false;
+    let audioCtx = null;
+    let knownMessageIds = new Set();
+    let isInitialMessageLoad = true;
+    let toastTimeout = null;
+
+    function showToast(msg, icon = '✨') {
+      const toast = document.getElementById('custom-toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+      if (!toast) return;
+
+      toastMsg.innerText = msg;
+      toastIcon.innerText = icon;
+      
+      toast.classList.remove('hidden');
+      
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playPopSound() {
+      if (isSoundMuted) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    function playChimeSound() {
+      if (isSoundMuted) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(523.25, now);
+        gain1.gain.setValueAtTime(0.2, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.25);
+
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(783.99, now + 0.08);
+        gain2.gain.setValueAtTime(0.25, now + 0.08);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now + 0.08);
+        osc2.stop(now + 0.35);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    function triggerHapticFeedback() {
+      if (navigator.vibrate) {
+        try {
+          navigator.vibrate(40);
+        } catch (e) {}
+      }
+    }
+
+    function updateSoundUI() {
+      const soundIcon = document.getElementById('global-sound-icon');
+      const soundBtn = document.getElementById('global-sound-btn');
+      if (!soundIcon || !soundBtn) return;
+
+      if (isSoundMuted) {
+        soundIcon.className = "fa-solid fa-volume-xmark text-slate-500 text-sm";
+        soundBtn.title = "Sound Muted";
+        soundBtn.classList.remove('border-pink-500/40');
+        soundBtn.classList.add('border-slate-800');
+      } else {
+        soundIcon.className = "fa-solid fa-volume-high text-pink-400 animate-pulse text-sm";
+        soundBtn.title = "Sound Active";
+        soundBtn.classList.remove('border-slate-800');
+        soundBtn.classList.add('border-pink-500/40');
+      }
+    }
+
+    function toggleSoundMute() {
+      userSoundToggled = true;
+      isSoundMuted = !isSoundMuted;
+      updateSoundUI();
+      if (!isSoundMuted) {
+        playPopSound();
+      }
+      showToast(isSoundMuted ? "Sound Muted 🔇" : "Sound Active 🔊", isSoundMuted ? "🔇" : "🔊");
+    }
+
+    const configRef = ref(db, 'config');
+    onValue(configRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        appConfig = data;
+      } else {
+        set(configRef, DEFAULT_CONFIG);
+        appConfig = DEFAULT_CONFIG;
+      }
+
+      if (!userSoundToggled) {
+        isSoundMuted = (appConfig.defaultSoundOn === false);
+        updateSoundUI();
+      }
+
+      updateLoginCardImage();
+      applyChatBackground();
+      if (currentUser) {
+        setupInbox();
+      }
+    });
+
+    const messagesRef = ref(db, 'messages');
+    onValue(messagesRef, (snapshot) => {
+      const data = snapshot.val();
+      messagesList = [];
+      
+      if (data) {
+        Object.keys(data).forEach(key => {
+          messagesList.push({ dbKey: key, ...data[key] });
+        });
+      }
+      messagesList.sort((a, b) => a.id - b.id);
+
+      if (isInitialMessageLoad) {
+        messagesList.forEach(m => knownMessageIds.add(m.id));
+        isInitialMessageLoad = false;
+      } else {
+        let hasNewIncoming = false;
+        messagesList.forEach(m => {
+          if (!knownMessageIds.has(m.id)) {
+            knownMessageIds.add(m.id);
+            if (currentUser && m.sender !== currentUser) {
+              hasNewIncoming = true;
+            }
+          }
+        });
+
+        if (hasNewIncoming) {
+          playChimeSound();
+          triggerHapticFeedback();
+        }
+      }
+
+      if (currentUser) {
+        setupInbox();
+        if (!document.getElementById('chat-view').classList.contains('hidden')) {
+          renderMessages();
+          checkAndMarkSeen();
+        }
+      }
+    });
+
+    const secretRef = ref(db, 'secret_messages');
+    onValue(secretRef, (snapshot) => {
+      const data = snapshot.val();
+      secretMessagesList = [];
+      if (data) {
+        Object.keys(data).forEach(key => {
+          secretMessagesList.push({ dbKey: key, ...data[key] });
+        });
+      }
+      if (currentUser) {
+        setupInbox();
+      }
+    });
+
+    const presenceRef = ref(db, 'presence');
+    onValue(presenceRef, (snapshot) => {
+      presenceData = snapshot.val() || {};
+      if (currentUser) {
+        updateOnlineStatusUI();
+      }
+    });
+
+    function setupPresence(user) {
+      if (!user) return;
+      const connectedRef = ref(db, '.info/connected');
+      const userPresenceRef = ref(db, `presence/${user}`);
+
+      onValue(connectedRef, (snap) => {
+        if (snap.val() === true) {
+          onDisconnect(userPresenceRef).set({ online: false, lastSeen: Date.now(), typing: false });
+          set(userPresenceRef, { online: true, lastSeen: Date.now(), typing: false });
+        }
+      });
+    }
+
+    function handleTypingInput() {
+      if (!currentUser) return;
+      const userPresenceRef = ref(db, `presence/${currentUser}`);
+
+      update(userPresenceRef, { typing: true, online: true, lastSeen: Date.now() });
+
+      if (typingTimeout) clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        update(userPresenceRef, { typing: false });
+      }, 2500);
+    }
+
+    function updateLoginCardImage() {
+      const imgContainer = document.getElementById('login-img-box');
+      if (!imgContainer) return;
+
+      const bannerType = appConfig.loginBannerType || (appConfig.loginImg ? 'image' : 'preset');
+      const animType = appConfig.loginAnimation || 'love-heart';
+
+      if (bannerType === 'image' && appConfig.loginImg) {
+        imgContainer.innerHTML = `<img src="${appConfig.loginImg}" class="w-full h-full object-cover rounded-2xl shadow-inner transition-all duration-300" alt="Login Banner">`;
+      } else {
+        if (animType === 'love-heart') {
+          imgContainer.innerHTML = `
+            <div class="relative w-full h-full flex items-center justify-center bg-gradient-to-tr from-pink-900/40 via-rose-900/30 to-purple-900/40 rounded-2xl overflow-hidden border border-pink-500/30">
+              <div class="absolute inset-0 bg-pink-500/10 animate-ping rounded-full blur-sm"></div>
+              <i class="fa-solid fa-heart text-3xl text-pink-500 animate-bounce filter drop-shadow-[0_0_12px_rgba(255,42,109,0.9)]"></i>
+              <i class="fa-solid fa-sparkles text-xs text-amber-300 absolute top-2 right-2 animate-pulse"></i>
+              <i class="fa-solid fa-heart text-[10px] text-pink-400 absolute bottom-2 left-3 animate-ping"></i>
+            </div>
+          `;
+        } else if (animType === 'cyber-sparkles') {
+          imgContainer.innerHTML = `
+            <div class="relative w-full h-full flex items-center justify-center bg-gradient-to-tr from-blue-900/40 via-purple-900/40 to-pink-900/40 rounded-2xl overflow-hidden border border-purple-500/30">
+              <div class="w-12 h-12 rounded-full border-2 border-dashed border-cyan-400 animate-spin flex items-center justify-center"></div>
+              <i class="fa-solid fa-sparkles text-2xl text-cyan-300 absolute animate-pulse"></i>
+            </div>
+          `;
+        } else if (animType === 'neon-shield') {
+          imgContainer.innerHTML = `
+            <div class="relative w-full h-full flex items-center justify-center bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 rounded-2xl overflow-hidden border border-indigo-500/40">
+              <div class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center text-xl border border-indigo-500/40 animate-glow">
+                <i class="fa-solid fa-shield-halved text-indigo-300 animate-pulse"></i>
+              </div>
+            </div>
+          `;
+        } else if (animType === 'romantic-bear') {
+          imgContainer.innerHTML = `
+            <div class="relative w-full h-full flex items-center justify-center bg-gradient-to-tr from-rose-900/40 to-amber-900/40 rounded-2xl overflow-hidden border border-rose-500/30">
+              <span class="text-3xl animate-bounce">🧸</span>
+              <i class="fa-solid fa-heart text-xs text-rose-400 absolute top-2 left-2 animate-ping"></i>
+            </div>
+          `;
+        } else {
+          imgContainer.innerHTML = `
+            <div class="w-14 h-14 bg-pink-500/10 text-pink-500 rounded-2xl flex items-center justify-center text-xl border border-pink-500/20 animate-glow">
+              <i class="fa-solid fa-lock-keyhole"></i>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function toggleAdminBannerTypeUI(type) {
+      if (type === 'image') {
+        document.getElementById('admin-preset-section').classList.add('hidden');
+        document.getElementById('admin-img-upload-section').classList.remove('hidden');
+      } else {
+        document.getElementById('admin-preset-section').classList.remove('hidden');
+        document.getElementById('admin-img-upload-section').classList.add('hidden');
+      }
+    }
+
+    function applyChatBackground() {
+      const chatView = document.getElementById('chat-view');
+      if (!chatView) return;
+      if (appConfig.chatBgImg) {
+        chatView.style.backgroundImage = `linear-gradient(rgba(3, 7, 18, 0.75), rgba(3, 7, 18, 0.75)), url('${appConfig.chatBgImg}')`;
+        chatView.style.backgroundSize = 'cover';
+        chatView.style.backgroundPosition = 'center';
+        chatView.style.backgroundRepeat = 'no-repeat';
+      } else {
+        chatView.style.backgroundImage = '';
+      }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && currentUser) {
+        update(ref(db, `presence/${currentUser}`), { typing: false });
+
+        const isSecretModeActive = (currentUser === "Fahim") ? appConfig.secretMode_Fahim : appConfig.secretMode_Jim;
+        if (isSecretModeActive) {
+          window.location.href = "https://www.google.com";
+        }
+      }
+    });
+
+    function isPureEmoji(str) {
+      if (!str) return false;
+      const cleanStr = str.replace(/\s+/g, '');
+      if (!cleanStr) return false;
+      const emojiRegex = /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+$/;
+      return emojiRegex.test(cleanStr);
+    }
+
+    function renderAvatarElement(containerId, name, pfpBase64) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      if (pfpBase64) {
+        el.innerHTML = `<img src="${pfpBase64}" class="w-full h-full object-cover rounded-full">`;
+      } else {
+        el.innerHTML = name ? name.charAt(0).toUpperCase() : '?';
+      }
+    }
+
+    function renderThemeParticles(themeName) {
+      const globalContainer = document.getElementById('global-particle-container');
+      const chatContainer = document.getElementById('chat-particle-container');
+      if (!globalContainer || !chatContainer) return;
+
+      globalContainer.innerHTML = '';
+      chatContainer.innerHTML = '';
+
+      let particles = ['❤️', '💖', '💕', '💗', '✨'];
+      if (themeName === 'theme-messenger') {
+        particles = ['⚡', '💬', '💙', '✨', '🔵'];
+      } else if (themeName === 'theme-dark') {
+        particles = ['✨', '⭐', '🌙', '💫', '🟣'];
+      } else if (themeName === 'theme-emerald') {
+        particles = ['🍃', '🌿', '🌱', '✨', '🟢'];
+      }
+
+      function buildParticleSet(targetContainer, count) {
+        for (let i = 0; i < count; i++) {
+          const el = document.createElement('div');
+          el.className = 'particle-item';
+          el.innerText = particles[Math.floor(Math.random() * particles.length)];
+          
+          const leftPos = Math.random() * 100;
+          const duration = 6 + Math.random() * 8;
+          const delay = Math.random() * 5;
+          const fontSize = 14 + Math.random() * 18;
+
+          el.style.left = `${leftPos}%`;
+          el.style.bottom = `-10%`;
+          el.style.animationDuration = `${duration}s`;
+          el.style.animationDelay = `${delay}s`;
+          el.style.fontSize = `${fontSize}px`;
+
+          targetContainer.appendChild(el);
+        }
+      }
+      buildParticleSet(globalContainer, 18);
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('pass-input').value.trim();
+
+      if (pass === appConfig.passUser1) currentUser = "Fahim";
+      else if (pass === appConfig.passUser2) currentUser = "Jim";
+      else if (pass === appConfig.passAdmin) {
+        openAdminModal();
+        document.getElementById('login-modal').classList.add('hidden');
+        document.getElementById('pass-input').value = '';
+        return;
+      } else {
+        document.getElementById('error-msg').classList.remove('hidden');
+        document.getElementById('login-card').classList.add('shake');
+        setTimeout(() => document.getElementById('login-card').classList.remove('shake'), 400);
+        return;
+      }
+
+      document.getElementById('login-modal').classList.add('hidden');
+      document.getElementById('app-screen').classList.remove('hidden');
+      document.getElementById('pass-input').value = '';
+      
+      setupPresence(currentUser);
+      applyTheme(appConfig.theme || "theme-love");
+      setupInbox();
+      showToast(`Welcome back, ${currentUser}! ✨`, "👋");
+    }
+
+    function logout() {
+      if (currentUser) {
+        update(ref(db, `presence/${currentUser}`), { online: false, typing: false, lastSeen: Date.now() });
+      }
+      currentUser = null;
+      document.getElementById('app-screen').classList.add('hidden');
+      document.getElementById('login-modal').classList.remove('hidden');
+    }
+
+    function toggleFabMenu() {
+      const menu = document.getElementById('fab-menu');
+      const icon = document.getElementById('fab-icon');
+      
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        setTimeout(() => {
+          menu.classList.remove('scale-90', 'opacity-0');
+          menu.classList.add('scale-100', 'opacity-100');
+        }, 10);
+        icon.classList.add('rotate-45');
+      } else {
+        menu.classList.remove('scale-100', 'opacity-100');
+        menu.classList.add('scale-90', 'opacity-0');
+        icon.classList.remove('rotate-45');
+        setTimeout(() => menu.classList.add('hidden'), 200);
+      }
+    }
+
+    function openSendSecretModal(type) {
+      currentSecretType = type;
+      pendingSecretImageBase64 = "";
+      toggleFabMenu();
+
+      const modal = document.getElementById('send-secret-modal');
+      const title = document.getElementById('send-secret-title');
+      const container = document.getElementById('secret-input-container');
+
+      if (type === 'text') {
+        title.innerHTML = `<i class="fa-solid fa-envelope"></i> Send Secret Message`;
+        container.innerHTML = `
+          <textarea id="secret-field" rows="4" placeholder="গোপন চিঠিটি লিখুন..." 
+            class="w-full bg-slate-800 border border-slate-700/80 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-pink-500"></textarea>
+        `;
+      } else {
+        title.innerHTML = `<i class="fa-solid fa-camera text-purple-400"></i> Send Secret Image`;
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div id="secret-img-preview-box" class="w-full h-40 bg-slate-800/80 border-2 border-dashed border-slate-700 rounded-2xl flex flex-col items-center justify-center text-slate-500 overflow-hidden relative">
+              <i class="fa-solid fa-cloud-arrow-up text-3xl mb-1"></i>
+              <span class="text-[11px]">ছবি আপলোড বা ক্যামেরা দিয়ে তুলুন</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <label class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-xs font-medium text-slate-200 transition active:scale-95">
+                <i class="fa-solid fa-image text-purple-400"></i> Gallery / File
+                <input type="file" accept="image/*" class="hidden" onchange="handleSecretImageSelect(event)">
+              </label>
+
+              <label class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-xs font-medium text-slate-200 transition active:scale-95">
+                <i class="fa-solid fa-camera text-pink-400"></i> Open Camera
+                <input type="file" accept="image/*" capture="environment" class="hidden" onchange="handleSecretImageSelect(event)">
+              </label>
+            </div>
+          </div>
+        `;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function handleSecretImageSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 900;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          pendingSecretImageBase64 = canvas.toDataURL('image/jpeg', 0.72);
+          const box = document.getElementById('secret-img-preview-box');
+          if (box) {
+            box.innerHTML = `<img src="${pendingSecretImageBase64}" class="w-full h-full object-cover">`;
+          }
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function closeSendSecretModal() {
+      document.getElementById('send-secret-modal').classList.add('hidden');
+    }
+
+    function submitSecretContent() {
+      let content = "";
+
+      if (currentSecretType === 'text') {
+        const field = document.getElementById('secret-field');
+        content = field ? field.value.trim() : "";
+      } else {
+        content = pendingSecretImageBase64;
+      }
+
+      if (!content) {
+        showToast("অনুগ্রহ করে কোনো বার্তা বা ছবি ইনপুট দিন!", "⚠️");
+        return;
+      }
+
+      const partnerRole = currentUser === "Fahim" ? "Jim" : "Fahim";
+
+      push(ref(db, 'secret_messages'), {
+        id: Date.now(),
+        sender: currentUser,
+        recipient: partnerRole,
+        type: currentSecretType,
+        content: content,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isRead: false
+      });
+
+      playPopSound();
+      triggerHapticFeedback();
+      closeSendSecretModal();
+      showToast("Secret letter sent successfully! ✨", "💌");
+    }
+
+    function setupInbox() {
+      const myPfp = currentUser === "Fahim" ? appConfig.pfp_Fahim : appConfig.pfp_Jim;
+      const partnerRole = currentUser === "Fahim" ? "Jim" : "Fahim";
+      const partnerName = partnerRole === "Jim" ? appConfig.nickname_Jim : appConfig.nickname_Fahim;
+      const partnerPfp = partnerRole === "Jim" ? appConfig.pfp_Jim : appConfig.pfp_Fahim;
+
+      document.getElementById('user-my-role').innerText = `Logged in as ${currentUser}`;
+      
+      renderAvatarElement('my-avatar', currentUser, myPfp);
+
+      document.getElementById('inbox-partner-name').innerText = partnerName;
+      renderAvatarElement('inbox-partner-avatar', partnerName, partnerPfp);
+
+      const msgs = messagesList.filter(m => !m.isDeleted);
+      if (msgs.length > 0) {
+        const lastMsg = msgs[msgs.length - 1];
+        let lastText = lastMsg.text;
+        if (lastMsg.type === 'image' || lastMsg.image) lastText = '📷 Photo';
+        else if (lastMsg.type === 'giftbox') lastText = '🎁 Gift Box Message';
+        document.getElementById('inbox-last-msg').innerText = lastText;
+      }
+
+      const secrets = secretMessagesList.filter(m => m.recipient === currentUser && !m.isRead);
+      const envelopeBox = document.getElementById('secret-envelope-container');
+
+      if (secrets.length > 0) {
+        envelopeBox.classList.remove('hidden');
+        document.getElementById('secret-count-badge').innerText = secrets.length;
+      } else {
+        envelopeBox.classList.add('hidden');
+      }
+
+      updateOnlineStatusUI();
+    }
+
+    function updateOnlineStatusUI() {
+      if (!currentUser) return;
+      const partnerRole = currentUser === "Fahim" ? "Jim" : "Fahim";
+      const partnerPresence = presenceData[partnerRole] || {};
+      const isOnline = partnerPresence.online === true;
+      const isTyping = partnerPresence.typing === true;
+
+      const chatNameEl = document.getElementById('chat-partner-name');
+      const inboxNameEl = document.getElementById('inbox-partner-name');
+      const chatStatusEl = document.getElementById('chat-partner-status');
+
+      if (isTyping) {
+        if (chatNameEl) chatNameEl.className = "font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-amber-300 animate-pulse leading-tight text-xs";
+        if (inboxNameEl) inboxNameEl.className = "font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-amber-300 animate-pulse truncate text-sm";
+        if (chatStatusEl) chatStatusEl.innerHTML = `<span class="text-pink-400 font-semibold animate-pulse flex items-center gap-1"><i class="fa-solid fa-pen text-[9px] animate-bounce"></i> typing...</span>`;
+      } else {
+        if (chatNameEl) chatNameEl.className = "font-bold text-white leading-tight text-xs";
+        if (inboxNameEl) inboxNameEl.className = "font-bold text-white truncate text-sm";
+        if (chatStatusEl) {
+          if (isOnline) {
+            chatStatusEl.innerHTML = `<span class="text-emerald-400 font-medium flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Active now</span>`;
+          } else {
+            chatStatusEl.innerHTML = `<span class="text-slate-500 font-medium">Offline</span>`;
+          }
+        }
+      }
+
+      const chatDot = document.getElementById('chat-partner-dot');
+      if (chatDot) {
+        chatDot.className = `w-2.5 h-2.5 ${isOnline ? 'bg-emerald-500' : 'bg-slate-500'} border-2 border-slate-900 rounded-full absolute bottom-0 right-0 transition-colors duration-300`;
+      }
+
+      const inboxDot = document.getElementById('inbox-partner-dot');
+      if (inboxDot) {
+        inboxDot.className = `w-3.5 h-3.5 ${isOnline ? 'bg-emerald-500' : 'bg-slate-500'} border-2 border-slate-900 rounded-full absolute bottom-0 right-0 transition-colors duration-300`;
+      }
+
+      const inboxTimeEl = document.getElementById('inbox-last-time');
+      if (inboxTimeEl) {
+        if (isTyping) {
+          inboxTimeEl.innerText = "typing...";
+          inboxTimeEl.className = "text-[10px] text-pink-400 font-semibold animate-pulse";
+        } else if (isOnline) {
+          inboxTimeEl.innerText = "Active now";
+          inboxTimeEl.className = "text-[10px] text-emerald-400 font-medium";
+        } else {
+          inboxTimeEl.innerText = "Offline";
+          inboxTimeEl.className = "text-[10px] text-slate-500";
+        }
+      }
+    }
+
+    function animateSecretTypewriter() {
+      const elements = document.querySelectorAll('.typewriter-text');
+      elements.forEach(el => {
+        const text = el.getAttribute('data-fulltext');
+        if (!text) return;
+        el.innerText = '';
+        let i = 0;
+        const interval = setInterval(() => {
+          if (i < text.length) {
+            el.innerText += text.charAt(i);
+            i++;
+          } else {
+            clearInterval(interval);
+          }
+        }, 35);
+      });
+    }
+
+    function openSecretLettersModal() {
+      const secrets = secretMessagesList.filter(m => m.recipient === currentUser && !m.isRead);
+      if (secrets.length === 0) return;
+
+      const container = document.getElementById('secret-letters-list');
+      container.innerHTML = secrets.map(s => {
+        const senderNick = s.sender === "Fahim" ? appConfig.nickname_Fahim : appConfig.nickname_Jim;
+
+        if (s.type === 'image') {
+          return `
+            <div class="bg-slate-950/90 p-3 rounded-2xl border border-amber-500/40 space-y-2 shadow-inner">
+              <img src="${s.content}" alt="Secret Image" class="w-full max-h-56 object-cover rounded-xl border border-slate-800 cursor-pointer" onclick="openImageViewer('${s.content}')">
+              <p class="text-amber-300 font-signature text-xl text-right tracking-widest pt-1 pr-2">
+                from ${escapeHTML(senderNick)}...
+              </p>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="bg-slate-950/90 p-4 rounded-2xl border border-amber-500/40 space-y-2 shadow-inner">
+              <p class="typewriter-text text-amber-100 text-sm leading-relaxed font-sans min-h-[40px]" data-fulltext="${escapeHTML(s.content)}"></p>
+              <p class="text-amber-300 font-signature text-xl text-right tracking-widest pt-1 pr-2">
+                from ${escapeHTML(senderNick)}...
+              </p>
+            </div>
+          `;
+        }
+      }).join('');
+
+      document.getElementById('secret-letter-modal').classList.remove('hidden');
+      animateSecretTypewriter();
+    }
+
+    function closeSecretLettersModal() {
+      const secrets = secretMessagesList.filter(m => m.recipient === currentUser && !m.isRead);
+      secrets.forEach(s => {
+        if (s.dbKey) {
+          update(ref(db, `secret_messages/${s.dbKey}`), { isRead: true });
+        }
+      });
+
+      document.getElementById('secret-letter-modal').classList.add('hidden');
+      setupInbox();
+    }
+
+    function openChatView() {
+      const partnerRole = currentUser === "Fahim" ? "Jim" : "Fahim";
+      const partnerName = partnerRole === "Jim" ? appConfig.nickname_Jim : appConfig.nickname_Fahim;
+      const partnerPfp = partnerRole === "Jim" ? appConfig.pfp_Jim : appConfig.pfp_Fahim;
+
+      document.getElementById('chat-partner-name').innerText = partnerName;
+      renderAvatarElement('chat-partner-avatar', partnerName, partnerPfp);
+
+      document.getElementById('inbox-view').classList.add('hidden');
+      
+      const chatView = document.getElementById('chat-view');
+      chatView.classList.remove('hidden');
+      chatView.classList.add('flex', 'animate-slide-in');
+
+      setTimeout(() => {
+        chatView.classList.remove('animate-slide-in');
+      }, 350);
+
+      applyChatBackground();
+      updateOnlineStatusUI();
+      renderMessages();
+      checkAndMarkSeen();
+    }
+
+    function closeChatView() {
+      if (currentUser) {
+        update(ref(db, `presence/${currentUser}`), { typing: false });
+      }
+      
+      const chatView = document.getElementById('chat-view');
+      const inboxView = document.getElementById('inbox-view');
+
+      chatView.classList.add('hidden');
+      chatView.classList.remove('flex');
+
+      inboxView.classList.remove('hidden');
+      inboxView.classList.add('animate-slide-left');
+
+      setTimeout(() => {
+        inboxView.classList.remove('animate-slide-left');
+      }, 350);
+
+      setupInbox();
+    }
+
+    function checkAndMarkSeen() {
+      messagesList.forEach(m => {
+        if (m.sender !== currentUser && !m.seen && m.dbKey) {
+          update(ref(db, `messages/${m.dbKey}`), { seen: true });
+        }
+      });
+    }
+
+    function selectGiftBoxMode() {
+      isGiftBoxMode = true;
+      toggleEmojiPicker();
+      const input = document.getElementById('message-input');
+      input.placeholder = "Type your secret gift message...";
+      input.focus();
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('message-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      if (currentUser) {
+        update(ref(db, `presence/${currentUser}`), { typing: false });
+      }
+
+      const picker = document.getElementById('emoji-picker');
+      if (picker && !picker.classList.contains('hidden')) {
+        picker.classList.add('hidden');
+      }
+
+      const msgType = isGiftBoxMode ? 'giftbox' : 'text';
+
+      push(ref(db, 'messages'), {
+        id: Date.now(),
+        sender: currentUser,
+        type: msgType,
+        text: text,
+        opened: false,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isBold: false,
+        isDeleted: false,
+        seen: false,
+        replyTo: activeReplyTo ? { sender: activeReplyTo.sender, text: activeReplyTo.text } : null,
+        reaction: null
+      });
+
+      playPopSound();
+      triggerHapticFeedback();
+
+      input.value = '';
+      input.placeholder = "Type a message...";
+      isGiftBoxMode = false;
+      cancelReply();
+    }
+
+    function compressAndSendChatImage(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 900;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const base64Data = canvas.toDataURL('image/jpeg', 0.72);
+
+          push(ref(db, 'messages'), {
+            id: Date.now(),
+            sender: currentUser,
+            type: 'image',
+            image: base64Data,
+            text: '📷 Photo',
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            isBold: false,
+            isDeleted: false,
+            seen: false,
+            replyTo: activeReplyTo ? { sender: activeReplyTo.sender, text: activeReplyTo.text } : null,
+            reaction: null
+          });
+
+          playPopSound();
+          triggerHapticFeedback();
+          cancelReply();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleChatImageSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      compressAndSendChatImage(file);
+      e.target.value = '';
+    }
+
+    function openImageViewer(imgUrl) {
+      const modal = document.getElementById('image-viewer-modal');
+      const imgTarget = document.getElementById('full-image-target');
+      if (modal && imgTarget) {
+        imgTarget.src = imgUrl;
+        modal.classList.remove('hidden');
+      }
+    }
+
+    function openImageViewerById(msgId) {
+      const msg = messagesList.find(m => m.id === msgId);
+      if (msg) {
+        const imgSrc = msg.image || msg.content;
+        if (imgSrc) openImageViewer(imgSrc);
+      }
+    }
+
+    function closeImageViewer() {
+      const modal = document.getElementById('image-viewer-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function openGiftBox(msgId, msgText) {
+      const modal = document.getElementById('giftbox-modal');
+      const contentBox = document.getElementById('giftbox-content-box');
+      contentBox.innerText = msgText;
+      modal.classList.remove('hidden');
+
+      const msg = messagesList.find(m => m.id === msgId);
+      if (msg && msg.dbKey && msg.sender !== currentUser && !msg.opened) {
+        update(ref(db, `messages/${msg.dbKey}`), { opened: true, openedAt: Date.now() });
+      }
+    }
+
+    function closeGiftBoxModal() {
+      document.getElementById('giftbox-modal').classList.add('hidden');
+    }
+
+    function renderMessages() {
+      const chatBox = document.getElementById('chat-box');
+      chatBox.innerHTML = '';
+
+      messagesList.forEach((msg) => {
+        if (msg.isDeleted) return;
+
+        const isSelf = msg.sender === currentUser;
+        const msgContainer = document.createElement('div');
+        msgContainer.className = `flex flex-col ${isSelf ? 'items-end' : 'items-start'} my-1 relative group z-10 animate-msg-in`;
+
+        const isImage = (msg.type === 'image') || Boolean(msg.image);
+        const isGiftBox = msg.type === 'giftbox';
+        const isEmojiOnly = !isImage && !isGiftBox && isPureEmoji(msg.text);
+
+        let replyMarkup = msg.replyTo ? `
+          <div class="text-[9px] bg-black/20 p-1 rounded-lg mb-1 border-l-2 border-white/50 truncate">
+            <span class="font-bold">${msg.replyTo.sender}:</span> ${escapeHTML(msg.replyTo.text)}
+          </div>` : '';
+
+        let reactionMarkup = msg.reaction ? `
+          <span class="absolute -bottom-2 right-1 bg-slate-900/80 backdrop-blur-xs text-xs px-1.5 rounded-full select-none shadow">
+            ${msg.reaction}
+          </span>` : '';
+
+        let contentMarkup = '';
+        const imgSrc = msg.image || msg.content;
+        
+        if (isImage && imgSrc) {
+          contentMarkup = `<img src="${imgSrc}" onclick="openImageViewerById(${msg.id})" class="max-w-[220px] max-h-[280px] rounded-xl object-cover cursor-pointer hover:opacity-90 transition shadow-md border border-slate-700/50" alt="Shared Chat Image" />`;
+        } else if (isGiftBox) {
+          let giftStatusMarkup = '';
+          if (isSelf) {
+            if (msg.opened) {
+              giftStatusMarkup = `<p class="text-[9px] text-emerald-400 font-bold mt-1 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Opened by recipient 🎁</p>`;
+            } else {
+              giftStatusMarkup = `<p class="text-[9px] text-amber-400/90 font-medium mt-1 flex items-center gap-1"><i class="fa-solid fa-clock"></i> Gift Unopened</p>`;
+            }
+          }
+
+          contentMarkup = `
+            <div onclick="openGiftBox(${msg.id}, '${escapeHTML(msg.text).replace(/'/g, "\\'")}')" class="flex flex-col p-3 bg-gradient-to-r from-amber-500/30 via-rose-500/20 to-amber-500/30 border-2 border-amber-400/60 rounded-2xl cursor-pointer hover:scale-102 active:scale-95 transition-all duration-300 select-none shadow-[0_8px_20px_rgba(245,158,11,0.25)] group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-tr from-amber-400 via-rose-500 to-yellow-300 text-slate-950 rounded-xl flex items-center justify-center text-xl shadow-lg border border-amber-200/60 group-hover:rotate-12 transition-transform duration-300">
+                  🎁
+                </div>
+                <div>
+                  <p class="font-extrabold text-amber-300 text-xs flex items-center gap-1.5 tracking-wide">
+                    <span>Surprise Gift Box</span> <i class="fa-solid fa-sparkles text-[10px] text-yellow-300 animate-pulse"></i>
+                  </p>
+                  <p class="text-[10px] text-slate-300 mt-0.5 font-medium">Touch to unwrap secret gift...</p>
+                </div>
+              </div>
+              ${giftStatusMarkup}
+            </div>
+          `;
+        } else if (isEmojiOnly) {
+          contentMarkup = `<span class="text-4xl animate-emoji-in-place select-none drop-shadow-md">${escapeHTML(msg.text)}</span>`;
+        } else {
+          contentMarkup = `<p class="leading-relaxed break-words">${escapeHTML(msg.text)}</p>`;
+        }
+
+        let bubbleStyle = isEmojiOnly 
+          ? "bg-transparent p-1 shadow-none" 
+          : (isImage ? 'p-1 rounded-2xl' : (isSelf ? 'bg-accent text-white rounded-2xl rounded-tr-xs px-3.5 py-2.5 text-sm shadow-md' : 'bg-slate-800 text-slate-100 rounded-2xl rounded-tl-xs px-3.5 py-2.5 text-sm shadow-md'));
+
+        if (msg.isBold && !isEmojiOnly && !isImage && !isGiftBox) {
+          bubbleStyle += ' font-bold text-yellow-200 border-2 border-amber-400';
+        }
+
+        /* Delivery & Read Status Ticks Logic */
+        let tickMarkup = '';
+        if (isSelf) {
+          const partnerRole = currentUser === "Fahim" ? "Jim" : "Fahim";
+          const isPartnerOnline = presenceData[partnerRole]?.online === true;
+
+          if (msg.seen) {
+            tickMarkup = `<i class="fa-solid fa-check-double text-sky-400 text-[10px] ml-1" title="Seen"></i>`;
+          } else if (isPartnerOnline || msg.delivered) {
+            tickMarkup = `<i class="fa-solid fa-check-double text-slate-400 text-[10px] ml-1" title="Delivered"></i>`;
+          } else {
+            tickMarkup = `<i class="fa-solid fa-check text-slate-400 text-[10px] ml-1" title="Sent"></i>`;
+          }
+        }
+
+        msgContainer.innerHTML = `
+          <div 
+            onclick="handleMessageClick(${msg.id})"
+            oncontextmenu="handleContextMenu(event, ${msg.id})"
+            ontouchstart="handleTouchStart(${msg.id})"
+            ontouchend="handleTouchEnd()"
+            class="max-w-[85%] cursor-pointer relative transition hover:opacity-95"
+          >
+            <div class="${bubbleStyle}">
+              ${replyMarkup}
+              ${contentMarkup}
+            </div>
+            ${reactionMarkup}
+            <span class="text-[8px] text-slate-500 mt-0.5 px-1 flex items-center ${isSelf ? 'justify-end' : 'justify-start'}">${msg.time}${tickMarkup}</span>
+          </div>
+        `;
+        chatBox.appendChild(msgContainer);
+      });
+
+      chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+    }
+
+    function handleMessageClick(msgId) {
+      const msg = messagesList.find(m => m.id === msgId);
+      if (!msg) return;
+
+      const isImage = (msg.type === 'image') || Boolean(msg.image);
+      const isGiftBox = msg.type === 'giftbox';
+      const isEmojiOnly = !isImage && !isGiftBox && isPureEmoji(msg.text);
+
+      if (isImage || isGiftBox || isEmojiOnly) {
+        return;
+      }
+
+      setReply(msgId);
+    }
+
+    function handleTouchStart(msgId) { touchTimer = setTimeout(() => { openContextMenu(msgId); }, 500); }
+    function handleTouchEnd() { if (touchTimer) clearTimeout(touchTimer); }
+    function handleContextMenu(e, msgId) { e.preventDefault(); openContextMenu(msgId); }
+
+    function openContextMenu(msgId) {
+      selectedMsgId = msgId;
+      const msg = messagesList.find(m => m.id === msgId);
+
+      document.getElementById('action-edit-btn').style.display = (msg && msg.sender === currentUser && msg.type !== 'image' && msg.type !== 'giftbox') ? 'flex' : 'none';
+      document.getElementById('full-reaction-picker').classList.add('hidden');
+      document.getElementById('context-modal').classList.remove('hidden');
+    }
+
+    function closeContextMenu() { document.getElementById('context-modal').classList.add('hidden'); }
+    function toggleFullReactionPicker() { document.getElementById('full-reaction-picker').classList.toggle('hidden'); }
+
+    function addReaction(emoji) {
+      const msg = messagesList.find(m => m.id === selectedMsgId);
+      if (msg && msg.dbKey) {
+        update(ref(db, `messages/${msg.dbKey}`), { reaction: emoji });
+      }
+      closeContextMenu();
+    }
+
+    function actionReply() { setReply(selectedMsgId); closeContextMenu(); }
+    function actionToggleBold() {
+      const msg = messagesList.find(m => m.id === selectedMsgId);
+      if (msg && msg.dbKey) {
+        update(ref(db, `messages/${msg.dbKey}`), { isBold: !msg.isBold });
+      }
+      closeContextMenu();
+    }
+
+    function actionEdit() {
+      const msg = messagesList.find(m => m.id === selectedMsgId);
+      if (msg && msg.sender === currentUser && msg.dbKey && msg.type !== 'image' && msg.type !== 'giftbox') {
+        const newText = prompt("Edit your message:", msg.text);
+        if (newText !== null && newText.trim() !== "") {
+          update(ref(db, `messages/${msg.dbKey}`), { text: newText.trim() });
+        }
+      }
+      closeContextMenu();
+    }
+
+    function actionDelete() {
+      const msg = messagesList.find(m => m.id === selectedMsgId);
+      if (msg && msg.dbKey) {
+        update(ref(db, `messages/${msg.dbKey}`), { isDeleted: true });
+      }
+      closeContextMenu();
+    }
+
+    function setReply(msgId) {
+      const msg = messagesList.find(m => m.id === msgId);
+      if (!msg) return;
+
+      activeReplyTo = msg;
+      let replyDisplay = msg.text;
+      if (msg.type === 'image' || msg.image) replyDisplay = '📷 Photo';
+      else if (msg.type === 'giftbox') replyDisplay = '🎁 Gift Box Message';
+
+      document.getElementById('reply-user-label').innerText = `Replying to ${msg.sender}`;
+      document.getElementById('reply-text-label').innerText = replyDisplay;
+      document.getElementById('reply-preview-bar').classList.remove('hidden');
+      document.getElementById('message-input').focus();
+    }
+
+    function cancelReply() {
+      activeReplyTo = null;
+      document.getElementById('reply-preview-bar').classList.add('hidden');
+    }
+
+    function toggleEmojiPicker() { document.getElementById('emoji-picker').classList.toggle('hidden'); }
+    function addEmoji(emoji) {
+      document.getElementById('message-input').value += emoji;
+      document.getElementById('message-input').focus();
+      handleTypingInput();
+      toggleEmojiPicker();
+    }
+
+    function openSettings() {
+      const partnerRole = currentUser === "Fahim" ? "Jim" : "Fahim";
+      const myPfp = currentUser === "Fahim" ? appConfig.pfp_Fahim : appConfig.pfp_Jim;
+
+      document.getElementById('setting-nickname').value = partnerRole === "Jim" ? appConfig.nickname_Jim : appConfig.nickname_Fahim;
+      document.getElementById('setting-theme').value = appConfig.theme || 'theme-love';
+
+      tempPfpBase64 = null;
+      renderAvatarElement('settings-pfp-preview', currentUser, myPfp);
+
+      document.getElementById('settings-modal').classList.remove('hidden');
+    }
+
+    function handlePfpUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        tempPfpBase64 = evt.target.result;
+        renderAvatarElement('settings-pfp-preview', currentUser, tempPfpBase64);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
+
+    function saveSettings() {
+      const updatedConfig = { ...appConfig };
+      const partnerRole = currentUser === "Fahim" ? "Jim" : "Fahim";
+      const newNick = document.getElementById('setting-nickname').value.trim();
+
+      if (partnerRole === "Jim") updatedConfig.nickname_Jim = newNick || "Jim";
+      else updatedConfig.nickname_Fahim = newNick || "Fahim";
+
+      if (tempPfpBase64 !== null) {
+        if (currentUser === "Fahim") updatedConfig.pfp_Fahim = tempPfpBase64;
+        else updatedConfig.pfp_Jim = tempPfpBase64;
+      }
+
+      updatedConfig.theme = document.getElementById('setting-theme').value;
+      
+      set(ref(db, 'config'), updatedConfig);
+
+      applyTheme(updatedConfig.theme);
+      closeSettings();
+      showToast("Settings updated successfully! ✨", "⚙️");
+    }
+
+    function applyTheme(themeName) {
+      document.body.className = `bg-slate-950 text-slate-100 h-[100dvh] w-full flex flex-col justify-center items-center antialiased ${themeName} overflow-hidden`;
+      renderThemeParticles(themeName);
+    }
+
+    function openAdminModal() {
+      document.getElementById('admin-pass-user1').value = appConfig.passUser1;
+      document.getElementById('admin-pass-user2').value = appConfig.passUser2;
+      document.getElementById('admin-pass-admin').value = appConfig.passAdmin;
+
+      document.getElementById('admin-secret-fahim').checked = !!appConfig.secretMode_Fahim;
+      document.getElementById('admin-secret-jim').checked = !!appConfig.secretMode_Jim;
+
+      const soundSelect = document.getElementById('admin-sound-default-select');
+      if (soundSelect) soundSelect.value = (appConfig.defaultSoundOn !== false) ? "true" : "false";
+
+      const bannerSelect = document.getElementById('admin-banner-type-select');
+      const animSelect = document.getElementById('admin-animation-select');
+
+      if (bannerSelect) bannerSelect.value = appConfig.loginBannerType || 'preset';
+      if (animSelect) animSelect.value = appConfig.loginAnimation || 'love-heart';
+
+      toggleAdminBannerTypeUI(appConfig.loginBannerType || 'preset');
+
+      tempAdminLoginImgBase64 = null;
+      tempAdminChatBgBase64 = null;
+
+      const previewBox = document.getElementById('admin-login-img-preview');
+      if (previewBox) {
+        if (appConfig.loginImg) {
+          previewBox.innerHTML = `<img src="${appConfig.loginImg}" class="w-full h-full object-cover rounded-xl">`;
+        } else {
+          previewBox.innerHTML = `<i class="fa-solid fa-lock"></i>`;
+        }
+      }
+
+      const chatBgPreview = document.getElementById('admin-chat-bg-preview');
+      if (chatBgPreview) {
+        if (appConfig.chatBgImg) {
+          chatBgPreview.innerHTML = `<img src="${appConfig.chatBgImg}" class="w-full h-full object-cover rounded-xl">`;
+        } else {
+          chatBgPreview.innerHTML = `<i class="fa-solid fa-image"></i>`;
+        }
+      }
+
+      const chatLogsContainer = document.getElementById('admin-chat-logs');
+      chatLogsContainer.innerHTML = messagesList.map(m => `
+        <div class="p-2 bg-slate-900 border border-slate-800 rounded-lg">
+          <span class="text-pink-400 font-bold">${m.sender}</span> (${m.time}): 
+          <span class="${m.isDeleted ? 'line-through text-rose-500' : 'text-slate-200'}">${m.type === 'image' ? '[📷 Shared Image]' : (m.type === 'giftbox' ? '[🎁 Gift Box]' : escapeHTML(m.text))}</span>
+          ${m.isDeleted ? '<span class="text-[9px] text-rose-400 bg-rose-950 px-1 rounded ml-1">[Deleted]</span>' : ''}
+        </div>
+      `).join('') || '<p class="text-slate-500">No messages logged yet.</p>';
+
+      document.getElementById('admin-modal').classList.remove('hidden');
+    }
+
+    function handleAdminLoginImgUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 500;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          tempAdminLoginImgBase64 = canvas.toDataURL('image/jpeg', 0.8);
+          const preview = document.getElementById('admin-login-img-preview');
+          if (preview) {
+            preview.innerHTML = `<img src="${tempAdminLoginImgBase64}" class="w-full h-full object-cover rounded-xl">`;
+          }
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleAdminChatBgUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1000;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          tempAdminChatBgBase64 = canvas.toDataURL('image/jpeg', 0.8);
+          const preview = document.getElementById('admin-chat-bg-preview');
+          if (preview) {
+            preview.innerHTML = `<img src="${tempAdminChatBgBase64}" class="w-full h-full object-cover rounded-xl">`;
+          }
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeAdminChatBgImg() {
+      tempAdminChatBgBase64 = "";
+      const preview = document.getElementById('admin-chat-bg-preview');
+      if (preview) {
+        preview.innerHTML = `<i class="fa-solid fa-image text-slate-500"></i>`;
+      }
+    }
+
+    function closeAdminModal() {
+      document.getElementById('admin-modal').classList.add('hidden');
+      document.getElementById('login-modal').classList.remove('hidden');
+    }
+
+    function saveAdminSettings() {
+      const updatedConfig = { ...appConfig };
+
+      updatedConfig.secretMode_Fahim = document.getElementById('admin-secret-fahim').checked;
+      updatedConfig.secretMode_Jim = document.getElementById('admin-secret-jim').checked;
+
+      updatedConfig.defaultSoundOn = document.getElementById('admin-sound-default-select').value === "true";
+
+      updatedConfig.loginBannerType = document.getElementById('admin-banner-type-select').value;
+      updatedConfig.loginAnimation = document.getElementById('admin-animation-select').value;
+
+      if (tempAdminLoginImgBase64 !== null) {
+        updatedConfig.loginImg = tempAdminLoginImgBase64;
+      }
+
+      if (tempAdminChatBgBase64 !== null) {
+        updatedConfig.chatBgImg = tempAdminChatBgBase64;
+      }
+
+      updatedConfig.passUser1 = document.getElementById('admin-pass-user1').value.trim() || "1111";
+      updatedConfig.passUser2 = document.getElementById('admin-pass-user2').value.trim() || "2222";
+      updatedConfig.passAdmin = document.getElementById('admin-pass-admin').value.trim() || "admin123";
+
+      set(ref(db, 'config'), updatedConfig);
+      showToast("Admin settings updated successfully on Firebase! ✨", "🛡️");
+      closeAdminModal();
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+    }
+
+    window.handleLogin = handleLogin;
+    window.logout = logout;
+    window.toggleFabMenu = toggleFabMenu;
+    window.openSendSecretModal = openSendSecretModal;
+    window.closeSendSecretModal = closeSendSecretModal;
+    window.submitSecretContent = submitSecretContent;
+    window.handleSecretImageSelect = handleSecretImageSelect;
+    window.openSecretLettersModal = openSecretLettersModal;
+    window.closeSecretLettersModal = closeSecretLettersModal;
+    window.openChatView = openChatView;
+    window.closeChatView = closeChatView;
+    window.sendMessage = sendMessage;
+    window.handleChatImageSelect = handleChatImageSelect;
+    window.openImageViewer = openImageViewer;
+    window.openImageViewerById = openImageViewerById;
+    window.closeImageViewer = closeImageViewer;
+    window.openGiftBox = openGiftBox;
+    window.closeGiftBoxModal = closeGiftBoxModal;
+    window.selectGiftBoxMode = selectGiftBoxMode;
+    window.handleMessageClick = handleMessageClick;
+    window.handleTouchStart = handleTouchStart;
+    window.handleTouchEnd = handleTouchEnd;
+    window.handleContextMenu = handleContextMenu;
+    window.openContextMenu = openContextMenu;
+    window.closeContextMenu = closeContextMenu;
+    window.toggleFullReactionPicker = toggleFullReactionPicker;
+    window.addReaction = addReaction;
+    window.actionReply = actionReply;
+    window.actionToggleBold = actionToggleBold;
+    window.actionEdit = actionEdit;
+    window.actionDelete = actionDelete;
+    window.cancelReply = cancelReply;
+    window.toggleEmojiPicker = toggleEmojiPicker;
+    window.addEmoji = addEmoji;
+    window.handleTypingInput = handleTypingInput;
+    window.openSettings = openSettings;
+    window.handlePfpUpload = handlePfpUpload;
+    window.closeSettings = closeSettings;
+    window.saveSettings = saveSettings;
+    window.applyTheme = applyTheme;
+    window.openAdminModal = openAdminModal;
+    window.closeAdminModal = closeAdminModal;
+    window.saveAdminSettings = saveAdminSettings;
+    window.toggleAdminBannerTypeUI = toggleAdminBannerTypeUI;
+    window.handleAdminLoginImgUpload = handleAdminLoginImgUpload;
+    window.handleAdminChatBgUpload = handleAdminChatBgUpload;
+    window.removeAdminChatBgImg = removeAdminChatBgImg;
+    window.toggleSoundMute = toggleSoundMute;
+  </script>
+</body>
+</html>
